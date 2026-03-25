@@ -972,7 +972,7 @@ footer {
       <li><a href="#demo">Demo</a></li>
       <li><a href="#pricing">Pricing</a></li>
       <li><a href="#testimonials">Reviews</a></li>
-      <li><a href="/app" class="btn btn-primary btn-nav">Try the App →</a></li>
+      <li><a href="/app" class="btn btn-primary btn-nav" data-track="app_cta" data-track-location="nav">Try the App →</a></li>
     </ul>
   </div>
 </nav>
@@ -1001,7 +1001,7 @@ footer {
         <input type="email" name="email" placeholder="Enter your email address" id="heroEmail" required>
         <button class="btn btn-primary" type="submit">Join Waitlist →</button>
       </div>
-      <a href="/app" class="btn btn-outline hero-app-link">Try the App Now</a>
+      <a href="/app" class="btn btn-outline hero-app-link" data-track="app_cta" data-track-location="hero">Try the App Now</a>
     </form>
 
     <p class="hero-note">🎁 First <strong>100 users</strong> can lock in the launch deal.</p>
@@ -1118,10 +1118,10 @@ footer {
           </div>
         </div>
         <div style="display:flex; gap:12px; flex-wrap:wrap;">
-          <button class="btn btn-primary btn-generate" onclick="runDemo()" style="flex:1;">
+          <button class="btn btn-primary btn-generate" onclick="runDemo()" style="flex:1;" data-track="demo_generate" data-track-location="demo">
             ✦ Generate SEO Preview
           </button>
-          <a href="/app" class="btn btn-outline" style="flex:1;">Open Full Editor</a>
+          <a href="/app" class="btn btn-outline" style="flex:1;" data-track="app_cta" data-track-location="demo">Open Full Editor</a>
         </div>
         <div class="demo-output">
           <div class="demo-output-placeholder" id="demoPlaceholder">
@@ -1177,7 +1177,7 @@ footer {
           <li class="dimmed">Advanced optimization</li>
           <li class="dimmed">Priority support</li>
         </ul>
-        <a href="/app" class="btn btn-outline price-btn">Start Free</a>
+        <a href="/app" class="btn btn-outline price-btn" data-track="plan_select" data-plan="free" data-billing="free">Start Free</a>
       </div>
 
       <div class="price-card">
@@ -1192,7 +1192,7 @@ footer {
           <li>Email support</li>
           <li class="dimmed">Team features</li>
         </ul>
-        <a href="https://getcontentpilot.lemonsqueezy.com/checkout/buy/73c57362-e133-4c9b-b834-b5bd9993dd5c" class="btn btn-outline price-btn" target="_blank" rel="noopener noreferrer">Choose Starter</a>
+        <a href="https://getcontentpilot.lemonsqueezy.com/checkout/buy/73c57362-e133-4c9b-b834-b5bd9993dd5c" class="btn btn-outline price-btn" target="_blank" rel="noopener noreferrer" data-track="plan_select" data-plan="starter" data-billing="monthly">Choose Starter</a>
       </div>
 
       <div class="price-card featured">
@@ -1208,7 +1208,7 @@ footer {
           <li>Priority exports</li>
           <li>Priority support</li>
         </ul>
-        <a href="https://getcontentpilot.lemonsqueezy.com/checkout/buy/9194557c-b3a2-460b-a55e-fa97196cde85" class="btn btn-primary price-btn" target="_blank" rel="noopener noreferrer">Choose Pro →</a>
+        <a href="https://getcontentpilot.lemonsqueezy.com/checkout/buy/9194557c-b3a2-460b-a55e-fa97196cde85" class="btn btn-primary price-btn" target="_blank" rel="noopener noreferrer" data-track="plan_select" data-plan="pro" data-billing="monthly">Choose Pro →</a>
       </div>
 
       <div class="price-card">
@@ -1223,7 +1223,7 @@ footer {
           <li>Advanced optimization</li>
           <li>Commercial use</li>
         </ul>
-        <a href="https://getcontentpilot.lemonsqueezy.com/checkout/buy/4f602b92-1cdc-4f1e-9455-e9eee6919ba1" class="btn btn-outline price-btn" target="_blank" rel="noopener noreferrer">Choose Business</a>
+        <a href="https://getcontentpilot.lemonsqueezy.com/checkout/buy/4f602b92-1cdc-4f1e-9455-e9eee6919ba1" class="btn btn-outline price-btn" target="_blank" rel="noopener noreferrer" data-track="plan_select" data-plan="business" data-billing="monthly">Choose Business</a>
       </div>
 
       <div class="price-card featured launch-offer">
@@ -1239,7 +1239,7 @@ footer {
           <li>Priority feature requests</li>
           <li>No recurring payment</li>
         </ul>
-        <a href="https://getcontentpilot.lemonsqueezy.com/checkout/buy/5162d281-0d2f-4858-80f4-46c5edd75878" class="btn btn-primary price-btn" style="background: linear-gradient(135deg, var(--gold), #f97316);" target="_blank" rel="noopener noreferrer">Get Launch Deal</a>
+        <a href="https://getcontentpilot.lemonsqueezy.com/checkout/buy/5162d281-0d2f-4858-80f4-46c5edd75878" class="btn btn-primary price-btn" style="background: linear-gradient(135deg, var(--gold), #f97316);" target="_blank" rel="noopener noreferrer" data-track="plan_select" data-plan="launch_deal" data-billing="lifetime">Get Launch Deal</a>
       </div>
     </div>
   </div>
@@ -1336,7 +1336,7 @@ footer {
         <input type="text" name="bot-field" style="display:none">
         <input type="email" name="email" placeholder="you@company.com" id="ctaEmail" required>
         <button class="btn btn-primary" type="submit">Join the Waitlist →</button>
-        <a href="/app" class="btn btn-outline">Start Writing</a>
+        <a href="/app" class="btn btn-outline" data-track="app_cta" data-track-location="cta">Start Writing</a>
       </form>
     </div>
   </div>
@@ -1355,12 +1355,18 @@ footer {
 </footer>
 
 <script>
+function trackEvent(eventName, parameters = {}) {
+  if (typeof window.gtag !== "function") return;
+  window.gtag("event", eventName, parameters);
+}
+
 async function submitWaitlist(event) {
   event.preventDefault();
 
   const form = event.target;
   const formData = new FormData(form);
   const redirectUrl = formData.get("redirect") || "/thank-you.html";
+  const source = formData.get("source") || "unknown";
 
   try {
     await fetch("/", {
@@ -1369,14 +1375,30 @@ async function submitWaitlist(event) {
       body: new URLSearchParams(formData).toString(),
     });
 
+    trackEvent("waitlist_submit", {
+      source,
+      page_location: window.location.href,
+    });
+
     window.location.href = redirectUrl;
   } catch (error) {
+    trackEvent("waitlist_submit_error", {
+      source,
+      page_location: window.location.href,
+    });
     alert("Something went wrong. Please try again.");
   }
 }
 
 function runDemo() {
   const keyword = document.getElementById("demoKeyword").value || "best AI writing tools for SEO";
+
+  trackEvent("demo_generate_click", {
+    keyword,
+    language: document.getElementById("demoLang")?.value || "unknown",
+    tone: document.getElementById("demoTone")?.value || "unknown",
+    length: document.getElementById("demoLength")?.value || "unknown",
+  });
 
   document.getElementById("demoPlaceholder").style.display = "none";
   document.getElementById("demoResult").classList.remove("active");
@@ -1399,6 +1421,25 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     if (target) {
       target.scrollIntoView({ behavior: "smooth", block: "start" });
     }
+  });
+});
+
+document.querySelectorAll("[data-track='app_cta']").forEach((element) => {
+  element.addEventListener("click", () => {
+    trackEvent("app_cta_click", {
+      location: element.dataset.trackLocation || "unknown",
+      label: element.textContent.trim(),
+    });
+  });
+});
+
+document.querySelectorAll("[data-track='plan_select']").forEach((element) => {
+  element.addEventListener("click", () => {
+    trackEvent("select_plan", {
+      plan: element.dataset.plan || "unknown",
+      billing: element.dataset.billing || "unknown",
+      label: element.textContent.trim(),
+    });
   });
 });
 
