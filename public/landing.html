@@ -15,18 +15,15 @@
   --surface: #13132e;
   --border: rgba(255,255,255,0.06);
   --border-hover: rgba(99,102,241,0.4);
-
   --accent: #6366f1;
   --accent-light: #818cf8;
   --accent-glow: rgba(99,102,241,0.25);
   --green: #22d3ee;
   --green2: #34d399;
   --gold: #f59e0b;
-
   --text: #eef2ff;
   --text-secondary: #a5b4cf;
   --text-dim: #64748b;
-
   --radius: 16px;
   --radius-sm: 10px;
 }
@@ -53,8 +50,6 @@ body::before {
 }
 
 a { color: inherit; text-decoration: none; }
-img { max-width: 100%; display: block; }
-
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -71,7 +66,6 @@ nav {
   backdrop-filter: blur(24px) saturate(180%);
   background: rgba(5,5,10,0.7);
   border-bottom: 1px solid var(--border);
-  transition: all 0.3s;
 }
 
 .nav-inner {
@@ -115,7 +109,6 @@ nav {
   font-size: 0.9rem;
   font-weight: 500;
   color: var(--text-secondary);
-  transition: color 0.2s;
 }
 
 .nav-links a:hover { color: #fff; }
@@ -142,19 +135,10 @@ nav {
   box-shadow: 0 4px 20px var(--accent-glow);
 }
 
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 32px var(--accent-glow);
-}
-
 .btn-outline {
   background: transparent;
   color: var(--text);
   border: 1px solid var(--border-hover);
-}
-
-.btn-outline:hover {
-  background: rgba(99,102,241,0.1);
 }
 
 .btn-nav {
@@ -197,7 +181,6 @@ nav {
   background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
   top: -10%;
   left: -10%;
-  animation-delay: 0s;
 }
 
 .orb-2 {
@@ -206,7 +189,6 @@ nav {
   background: radial-gradient(circle, #7c3aed 0%, transparent 70%);
   bottom: -15%;
   right: -10%;
-  animation-delay: -4s;
 }
 
 .orb-3 {
@@ -216,7 +198,6 @@ nav {
   top: 40%;
   right: 20%;
   opacity: 0.15;
-  animation-delay: -8s;
 }
 
 @keyframes orbFloat {
@@ -253,7 +234,6 @@ nav {
   font-weight: 600;
   color: var(--accent-light);
   margin-bottom: 28px;
-  animation: fadeInUp 0.8s ease-out;
 }
 
 .badge-dot {
@@ -261,12 +241,6 @@ nav {
   height: 7px;
   background: var(--green);
   border-radius: 50%;
-  animation: pulse-dot 2s infinite;
-}
-
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.4); }
 }
 
 .hero h1 {
@@ -275,20 +249,12 @@ nav {
   line-height: 1.08;
   letter-spacing: -2px;
   margin-bottom: 24px;
-  animation: fadeInUp 0.8s ease-out 0.1s both;
 }
 
 .hero h1 .gradient-text {
   background: linear-gradient(135deg, var(--accent-light) 0%, var(--green) 50%, var(--accent-light) 100%);
-  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: shimmer 4s linear infinite;
-}
-
-@keyframes shimmer {
-  0% { background-position: 0% center; }
-  100% { background-position: 200% center; }
 }
 
 .hero-sub {
@@ -297,12 +263,6 @@ nav {
   font-weight: 400;
   max-width: 580px;
   margin: 0 auto 40px;
-  animation: fadeInUp 0.8s ease-out 0.2s both;
-}
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 .waitlist-form {
@@ -313,7 +273,6 @@ nav {
   align-items: center;
   max-width: 760px;
   margin: 0 auto 20px;
-  animation: fadeInUp 0.8s ease-out 0.3s both;
 }
 
 .waitlist-row {
@@ -324,7 +283,8 @@ nav {
   align-items: center;
 }
 
-.waitlist-form input {
+.waitlist-form input,
+.cta-form input {
   flex: 1;
   min-width: 240px;
   padding: 16px 24px;
@@ -335,15 +295,10 @@ nav {
   font-family: "Outfit", sans-serif;
   font-size: 0.95rem;
   outline: none;
-  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-.waitlist-form input::placeholder { color: var(--text-dim); }
-
-.waitlist-form input:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-glow);
-}
+.waitlist-form input::placeholder,
+.cta-form input::placeholder { color: var(--text-dim); }
 
 .hero-app-link {
   display: inline-flex;
@@ -354,10 +309,20 @@ nav {
   padding-right: 32px;
 }
 
+.form-success {
+  display: none;
+  font-size: 0.92rem;
+  color: var(--green2);
+  margin-top: 6px;
+}
+
+.form-success.show {
+  display: block;
+}
+
 .hero-note {
   font-size: 0.8rem;
   color: var(--text-dim);
-  animation: fadeInUp 0.8s ease-out 0.4s both;
 }
 
 .hero-note strong { color: var(--green); }
@@ -367,7 +332,6 @@ nav {
   justify-content: center;
   gap: 48px;
   margin-top: 60px;
-  animation: fadeInUp 0.8s ease-out 0.5s both;
 }
 
 .stat { text-align: center; }
@@ -386,7 +350,8 @@ nav {
 }
 
 @media(max-width:700px) {
-  .waitlist-row { flex-direction: column; }
+  .waitlist-row,
+  .cta-form { flex-direction: column; }
   .stats-bar { gap: 24px; flex-wrap: wrap; }
   .stat-num { font-size: 1.5rem; }
 }
@@ -413,10 +378,7 @@ nav {
   max-width: 600px;
 }
 
-.features {
-  padding: 120px 0;
-  position: relative;
-}
+.features { padding: 120px 0; }
 
 .features-grid {
   display: grid;
@@ -430,30 +392,7 @@ nav {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 32px 28px;
-  transition: all 0.4s;
-  position: relative;
-  overflow: hidden;
 }
-
-.feature-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--accent), var(--green));
-  opacity: 0;
-  transition: opacity 0.4s;
-}
-
-.feature-card:hover {
-  border-color: var(--border-hover);
-  transform: translateY(-4px);
-  background: var(--bg-card-hover);
-}
-
-.feature-card:hover::before { opacity: 1; }
 
 .feature-icon {
   width: 48px;
@@ -495,7 +434,6 @@ nav {
 .demo-section {
   padding: 120px 0;
   background: linear-gradient(180deg, var(--bg-deep) 0%, #0a0a2e 50%, var(--bg-deep) 100%);
-  position: relative;
 }
 
 .demo-wrapper {
@@ -505,7 +443,6 @@ nav {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
-  box-shadow: 0 24px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03);
 }
 
 .demo-topbar {
@@ -533,7 +470,8 @@ nav {
 
 .demo-input-group { margin-bottom: 20px; }
 
-.demo-input-group label {
+.demo-input-group label,
+.demo-select-row label {
   display: block;
   font-size: 0.8rem;
   font-weight: 600;
@@ -543,7 +481,8 @@ nav {
   margin-bottom: 8px;
 }
 
-.demo-input {
+.demo-input,
+.demo-select-row select {
   width: 100%;
   padding: 14px 20px;
   background: rgba(255,255,255,0.04);
@@ -553,43 +492,12 @@ nav {
   font-family: "Outfit", sans-serif;
   font-size: 0.95rem;
   outline: none;
-  transition: border-color 0.3s;
 }
-
-.demo-input:focus { border-color: var(--accent); }
 
 .demo-select-row {
   display: flex;
   gap: 12px;
   margin-bottom: 20px;
-}
-
-.demo-select-row select {
-  flex: 1;
-  padding: 12px 16px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  color: #fff;
-  font-family: "Outfit", sans-serif;
-  font-size: 0.85rem;
-  outline: none;
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-}
-
-.demo-select-row select option { background: #1a1a2e; }
-
-.demo-select-row label {
-  font-size: 0.7rem;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 6px;
-  display: block;
 }
 
 .demo-select-wrapper { flex: 1; }
@@ -609,7 +517,6 @@ nav {
   border-radius: var(--radius-sm);
   padding: 24px;
   min-height: 180px;
-  position: relative;
 }
 
 .demo-output-placeholder {
@@ -626,11 +533,7 @@ nav {
 }
 
 .generated-content { display: none; }
-
-.generated-content.active {
-  display: block;
-  animation: fadeInUp 0.5s ease-out;
-}
+.generated-content.active { display: block; }
 
 .gen-score-bar {
   display: flex;
@@ -715,11 +618,6 @@ nav {
   vertical-align: text-bottom;
 }
 
-@keyframes blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
-}
-
 .loading-state {
   display: none;
   text-align: center;
@@ -739,6 +637,7 @@ nav {
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
+@keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
 
 .loader-text {
   font-size: 0.85rem;
@@ -760,14 +659,8 @@ nav {
   border-radius: var(--radius);
   padding: 32px 24px;
   position: relative;
-  transition: all 0.4s;
   display: flex;
   flex-direction: column;
-}
-
-.price-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--border-hover);
 }
 
 .price-card.featured {
@@ -828,8 +721,7 @@ nav {
 .price-features li {
   font-size: 0.85rem;
   color: var(--text-secondary);
-  padding: 7px 0;
-  padding-left: 22px;
+  padding: 7px 0 7px 22px;
   position: relative;
 }
 
@@ -886,12 +778,6 @@ nav {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 28px;
-  transition: all 0.3s;
-}
-
-.test-card:hover {
-  border-color: var(--border-hover);
-  transform: translateY(-3px);
 }
 
 .test-stars {
@@ -956,20 +842,6 @@ nav {
   overflow: hidden;
 }
 
-.cta-box::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(ellipse at center, var(--accent-glow) 0%, transparent 60%);
-  opacity: 0.3;
-  animation: pulse 6s ease-in-out infinite;
-}
-
-.cta-box > * { position: relative; z-index: 1; }
-
 .cta-box h2 {
   font-size: clamp(1.8rem, 4vw, 2.5rem);
   font-weight: 800;
@@ -990,26 +862,6 @@ nav {
   align-items: center;
   max-width: 760px;
   margin: 0 auto;
-}
-
-.cta-form input {
-  flex: 1;
-  min-width: 240px;
-  padding: 16px 24px;
-  background: rgba(0,0,0,0.4);
-  border: 1px solid var(--border);
-  border-radius: 50px;
-  color: #fff;
-  font-family: "Outfit", sans-serif;
-  font-size: 0.95rem;
-  outline: none;
-}
-
-.cta-form input:focus { border-color: var(--accent); }
-
-@media(max-width:700px) {
-  .cta-form { flex-direction: column; }
-  .cta-box { padding: 40px 24px; }
 }
 
 footer {
@@ -1041,10 +893,7 @@ footer {
 .footer-links a {
   font-size: 0.8rem;
   color: var(--text-dim);
-  transition: color 0.2s;
 }
-
-.footer-links a:hover { color: #fff; }
 
 @media(max-width:600px) {
   .footer-inner { flex-direction: column; gap: 16px; }
@@ -1052,6 +901,12 @@ footer {
 </style>
 </head>
 <body>
+
+<form name="waitlist" netlify netlify-honeypot="bot-field" hidden>
+  <input type="text" name="bot-field">
+  <input type="email" name="email">
+  <input type="text" name="source">
+</form>
 
 <nav>
   <div class="nav-inner">
@@ -1083,14 +938,21 @@ footer {
     </div>
     <h1>Write SEO Content<br>That <span class="gradient-text">Actually Ranks</span></h1>
     <p class="hero-sub">Your AI co-pilot analyzes top-ranking pages, generates optimized content, and gives you a real-time SEO score — so every article is built to reach Page 1.</p>
-    <div class="waitlist-form">
+
+    <form class="waitlist-form" name="waitlist" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="submitWaitlist(event, 'hero')">
+      <input type="hidden" name="form-name" value="waitlist">
+      <input type="hidden" name="source" value="hero">
+      <input type="text" name="bot-field" style="display:none">
       <div class="waitlist-row">
-        <input type="email" placeholder="Enter your email address" id="heroEmail">
-        <button class="btn btn-primary" onclick="joinWaitlist()">Join Waitlist →</button>
+        <input type="email" name="email" placeholder="Enter your email address" id="heroEmail" required>
+        <button class="btn btn-primary" type="submit">Join Waitlist →</button>
       </div>
       <a href="/app" class="btn btn-outline hero-app-link">Try the App Now</a>
-    </div>
+      <div class="form-success" id="heroSuccess">Thanks, you're on the waitlist.</div>
+    </form>
+
     <p class="hero-note">🎁 First <strong>100 users</strong> can lock in the launch deal.</p>
+
     <div class="stats-bar">
       <div class="stat">
         <div class="stat-num">12K+</div>
@@ -1277,7 +1139,7 @@ footer {
           <li>Email support</li>
           <li class="dimmed">Team features</li>
         </ul>
-        <button class="btn btn-outline price-btn" onclick="joinWaitlist()">Choose Starter</button>
+        <button class="btn btn-outline price-btn" onclick="document.getElementById('cta').scrollIntoView({ behavior: 'smooth' })">Choose Starter</button>
       </div>
 
       <div class="price-card featured">
@@ -1293,7 +1155,7 @@ footer {
           <li>Priority exports</li>
           <li>Priority support</li>
         </ul>
-        <button class="btn btn-primary price-btn" onclick="joinWaitlist()">Choose Pro →</button>
+        <button class="btn btn-primary price-btn" onclick="document.getElementById('cta').scrollIntoView({ behavior: 'smooth' })">Choose Pro →</button>
       </div>
 
       <div class="price-card">
@@ -1308,7 +1170,7 @@ footer {
           <li>Advanced optimization</li>
           <li>Commercial use</li>
         </ul>
-        <button class="btn btn-outline price-btn" onclick="joinWaitlist()">Choose Business</button>
+        <button class="btn btn-outline price-btn" onclick="document.getElementById('cta').scrollIntoView({ behavior: 'smooth' })">Choose Business</button>
       </div>
 
       <div class="price-card featured launch-offer">
@@ -1324,7 +1186,7 @@ footer {
           <li>Priority feature requests</li>
           <li>No recurring payment</li>
         </ul>
-        <button class="btn btn-primary price-btn" style="background: linear-gradient(135deg, var(--gold), #f97316);" onclick="joinWaitlist()">Get Launch Deal</button>
+        <button class="btn btn-primary price-btn" style="background: linear-gradient(135deg, var(--gold), #f97316);" onclick="document.getElementById('cta').scrollIntoView({ behavior: 'smooth' })">Get Launch Deal</button>
       </div>
     </div>
   </div>
@@ -1413,11 +1275,16 @@ footer {
     <div class="cta-box">
       <h2>Ready to write content that<br><span class="gradient-text">actually ranks?</span></h2>
       <p>Join the waitlist and be among the first 100 users to lock in the launch deal, or open the app right now and start testing.</p>
-      <div class="cta-form">
-        <input type="email" placeholder="you@company.com" id="ctaEmail">
-        <button class="btn btn-primary" onclick="joinWaitlist()">Join the Waitlist →</button>
+
+      <form class="cta-form" name="waitlist" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="submitWaitlist(event, 'cta')">
+        <input type="hidden" name="form-name" value="waitlist">
+        <input type="hidden" name="source" value="cta">
+        <input type="text" name="bot-field" style="display:none">
+        <input type="email" name="email" placeholder="you@company.com" id="ctaEmail" required>
+        <button class="btn btn-primary" type="submit">Join the Waitlist →</button>
         <a href="/app" class="btn btn-outline">Start Writing</a>
-      </div>
+      </form>
+      <div class="form-success" id="ctaSuccess">Thanks, you're on the waitlist.</div>
     </div>
   </div>
 </section>
@@ -1435,19 +1302,28 @@ footer {
 </footer>
 
 <script>
-function joinWaitlist() {
-  const heroEmail = document.getElementById("heroEmail");
-  const ctaEmail = document.getElementById("ctaEmail");
-  const email = heroEmail.value || ctaEmail.value;
+async function submitWaitlist(event, source) {
+  event.preventDefault();
 
-  if (!email || !email.includes("@")) {
-    alert("Please enter a valid email address.");
-    return;
+  const form = event.target;
+  const successEl = document.getElementById(source + "Success");
+  const formData = new FormData(form);
+
+  try {
+    await fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams(formData).toString(),
+    });
+
+    form.reset();
+    if (successEl) {
+      successEl.classList.add("show");
+      setTimeout(() => successEl.classList.remove("show"), 4000);
+    }
+  } catch (error) {
+    alert("Something went wrong. Please try again.");
   }
-
-  alert("Welcome aboard, " + email + "! You are on the ContentPilot waitlist.");
-  heroEmail.value = "";
-  ctaEmail.value = "";
 }
 
 function runDemo() {
