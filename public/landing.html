@@ -7,11 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&family=Crimson+Pro:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════════
-   CONTENTPILOT — LANDING PAGE
-   Dark luxury meets tech-forward confidence
-   ═══════════════════════════════════════════════ */
-
 :root {
   --bg-deep: #05050a;
   --bg: #08081a;
@@ -20,7 +15,7 @@
   --surface: #13132e;
   --border: rgba(255,255,255,0.06);
   --border-hover: rgba(99,102,241,0.4);
-  
+
   --accent: #6366f1;
   --accent-light: #818cf8;
   --accent-glow: rgba(99,102,241,0.25);
@@ -28,11 +23,11 @@
   --green2: #34d399;
   --gold: #f59e0b;
   --pink: #ec4899;
-  
+
   --text: #eef2ff;
   --text-secondary: #a5b4cf;
   --text-dim: #64748b;
-  
+
   --radius: 16px;
   --radius-sm: 10px;
 }
@@ -41,7 +36,7 @@
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: 'Outfit', sans-serif;
+  font-family: "Outfit", sans-serif;
   background: var(--bg-deep);
   color: var(--text);
   line-height: 1.65;
@@ -49,9 +44,8 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── NOISE OVERLAY ── */
 body::before {
-  content: '';
+  content: "";
   position: fixed;
   inset: 0;
   background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
@@ -68,9 +62,6 @@ img { max-width: 100%; display: block; }
   padding: 0 28px;
 }
 
-/* ═══════════════════════════════════════════════
-   NAVIGATION
-   ═══════════════════════════════════════════════ */
 nav {
   position: fixed;
   top: 0;
@@ -136,7 +127,7 @@ nav {
   gap: 8px;
   padding: 12px 28px;
   border-radius: 50px;
-  font-family: 'Outfit', sans-serif;
+  font-family: "Outfit", sans-serif;
   font-weight: 600;
   font-size: 0.9rem;
   border: none;
@@ -174,9 +165,6 @@ nav {
   .nav-links { display: none; }
 }
 
-/* ═══════════════════════════════════════════════
-   HERO SECTION
-   ═══════════════════════════════════════════════ */
 .hero {
   position: relative;
   min-height: 100vh;
@@ -188,7 +176,6 @@ nav {
   overflow: hidden;
 }
 
-/* Animated gradient orbs */
 .hero-bg {
   position: absolute;
   inset: 0;
@@ -237,11 +224,10 @@ nav {
   66% { transform: translate(-20px, 15px) scale(0.95); }
 }
 
-/* Grid lines */
 .hero-grid {
   position: absolute;
   inset: 0;
-  background-image: 
+  background-image:
     linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
   background-size: 80px 80px;
@@ -318,7 +304,6 @@ nav {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Waitlist Form */
 .waitlist-form {
   display: flex;
   gap: 12px;
@@ -335,13 +320,14 @@ nav {
   border: 1px solid var(--border);
   border-radius: 50px;
   color: #fff;
-  font-family: 'Outfit', sans-serif;
+  font-family: "Outfit", sans-serif;
   font-size: 0.95rem;
   outline: none;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .waitlist-form input::placeholder { color: var(--text-dim); }
+
 .waitlist-form input:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-glow);
@@ -358,11 +344,8 @@ nav {
   animation: fadeInUp 0.8s ease-out 0.4s both;
 }
 
-.hero-note strong {
-  color: var(--green);
-}
+.hero-note strong { color: var(--green); }
 
-/* Stats bar */
 .stats-bar {
   display: flex;
   justify-content: center;
@@ -371,12 +354,10 @@ nav {
   animation: fadeInUp 0.8s ease-out 0.5s both;
 }
 
-.stat {
-  text-align: center;
-}
+.stat { text-align: center; }
 
 .stat-num {
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   font-size: 2rem;
   font-weight: 700;
   color: #fff;
@@ -394,11 +375,8 @@ nav {
   .stat-num { font-size: 1.5rem; }
 }
 
-/* ═══════════════════════════════════════════════
-   FEATURES / HOW IT WORKS
-   ═══════════════════════════════════════════════ */
 .section-label {
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 3px;
@@ -442,7 +420,7 @@ nav {
 }
 
 .feature-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -498,9 +476,6 @@ nav {
   .features-grid { grid-template-columns: 1fr; }
 }
 
-/* ═══════════════════════════════════════════════
-   LIVE DEMO SECTION
-   ═══════════════════════════════════════════════ */
 .demo-section {
   padding: 120px 0;
   background: linear-gradient(180deg, var(--bg-deep) 0%, #0a0a2e 50%, var(--bg-deep) 100%);
@@ -517,7 +492,6 @@ nav {
   box-shadow: 0 24px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03);
 }
 
-/* Terminal-style top bar */
 .demo-topbar {
   display: flex;
   align-items: center;
@@ -534,18 +508,14 @@ nav {
 
 .demo-topbar span {
   margin-left: auto;
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   font-size: 0.7rem;
   color: var(--text-dim);
 }
 
-.demo-body {
-  padding: 32px;
-}
+.demo-body { padding: 32px; }
 
-.demo-input-group {
-  margin-bottom: 20px;
-}
+.demo-input-group { margin-bottom: 20px; }
 
 .demo-input-group label {
   display: block;
@@ -564,15 +534,13 @@ nav {
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   color: #fff;
-  font-family: 'Outfit', sans-serif;
+  font-family: "Outfit", sans-serif;
   font-size: 0.95rem;
   outline: none;
   transition: border-color 0.3s;
 }
 
-.demo-input:focus {
-  border-color: var(--accent);
-}
+.demo-input:focus { border-color: var(--accent); }
 
 .demo-select-row {
   display: flex;
@@ -587,7 +555,7 @@ nav {
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   color: #fff;
-  font-family: 'Outfit', sans-serif;
+  font-family: "Outfit", sans-serif;
   font-size: 0.85rem;
   outline: none;
   cursor: pointer;
@@ -619,7 +587,6 @@ nav {
   margin-bottom: 24px;
 }
 
-/* Demo output */
 .demo-output {
   background: rgba(0,0,0,0.3);
   border: 1px solid var(--border);
@@ -642,10 +609,7 @@ nav {
   opacity: 0.3;
 }
 
-/* Generated content styling */
-.generated-content {
-  display: none;
-}
+.generated-content { display: none; }
 
 .generated-content.active {
   display: block;
@@ -664,7 +628,7 @@ nav {
 }
 
 .gen-score {
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   font-size: 1.6rem;
   font-weight: 700;
   color: var(--green2);
@@ -675,9 +639,7 @@ nav {
   color: var(--text-dim);
 }
 
-.gen-score-label strong {
-  color: var(--green2);
-}
+.gen-score-label strong { color: var(--green2); }
 
 .gen-meta {
   display: flex;
@@ -687,7 +649,7 @@ nav {
 }
 
 .gen-meta-item {
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   font-size: 0.7rem;
   color: var(--text-dim);
   padding: 4px 10px;
@@ -704,7 +666,7 @@ nav {
 }
 
 .gen-paragraph {
-  font-family: 'Crimson Pro', serif;
+  font-family: "Crimson Pro", serif;
   font-size: 1rem;
   color: var(--text-secondary);
   line-height: 1.8;
@@ -723,7 +685,7 @@ nav {
   color: var(--accent-light);
   padding: 1px 6px;
   border-radius: 4px;
-  font-family: 'Outfit', sans-serif;
+  font-family: "Outfit", sans-serif;
   font-size: 0.85rem;
 }
 
@@ -748,9 +710,7 @@ nav {
   padding: 40px 0;
 }
 
-.loading-state.active {
-  display: block;
-}
+.loading-state.active { display: block; }
 
 .loader-ring {
   width: 40px;
@@ -769,12 +729,7 @@ nav {
   color: var(--text-dim);
 }
 
-/* ═══════════════════════════════════════════════
-   PRICING
-   ═══════════════════════════════════════════════ */
-.pricing {
-  padding: 120px 0;
-}
+.pricing { padding: 120px 0; }
 
 .pricing-grid {
   display: grid;
@@ -828,7 +783,7 @@ nav {
 }
 
 .price-amount {
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   font-size: 2.8rem;
   font-weight: 700;
   color: #fff;
@@ -863,7 +818,7 @@ nav {
 }
 
 .price-features li::before {
-  content: '✓';
+  content: "✓";
   position: absolute;
   left: 0;
   color: var(--green2);
@@ -871,12 +826,10 @@ nav {
   font-size: 0.8rem;
 }
 
-.price-features li.dimmed {
-  color: var(--text-dim);
-}
+.price-features li.dimmed { color: var(--text-dim); }
 
 .price-features li.dimmed::before {
-  content: '—';
+  content: "—";
   color: var(--text-dim);
 }
 
@@ -886,16 +839,20 @@ nav {
   justify-content: center;
 }
 
+.price-card.launch-offer {
+  grid-column: 1 / -1;
+  max-width: 420px;
+  margin: 10px auto 0;
+}
+
 @media(max-width:1024px) {
   .pricing-grid { grid-template-columns: 1fr 1fr; }
+  .price-card.launch-offer { grid-column: auto; max-width: none; margin: 0; }
 }
 @media(max-width:600px) {
   .pricing-grid { grid-template-columns: 1fr; }
 }
 
-/* ═══════════════════════════════════════════════
-   TESTIMONIALS
-   ═══════════════════════════════════════════════ */
 .testimonials {
   padding: 120px 0;
   background: linear-gradient(180deg, var(--bg-deep), #0a0a2a, var(--bg-deep));
@@ -929,7 +886,7 @@ nav {
 }
 
 .test-quote {
-  font-family: 'Crimson Pro', serif;
+  font-family: "Crimson Pro", serif;
   font-size: 1.05rem;
   font-style: italic;
   color: var(--text-secondary);
@@ -969,9 +926,6 @@ nav {
   .testimonials-grid { grid-template-columns: 1fr; }
 }
 
-/* ═══════════════════════════════════════════════
-   CTA SECTION
-   ═══════════════════════════════════════════════ */
 .cta-section {
   padding: 120px 0;
   text-align: center;
@@ -987,7 +941,7 @@ nav {
 }
 
 .cta-box::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -50%;
   left: -50%;
@@ -1028,23 +982,18 @@ nav {
   border: 1px solid var(--border);
   border-radius: 50px;
   color: #fff;
-  font-family: 'Outfit', sans-serif;
+  font-family: "Outfit", sans-serif;
   font-size: 0.95rem;
   outline: none;
 }
 
-.cta-form input:focus {
-  border-color: var(--accent);
-}
+.cta-form input:focus { border-color: var(--accent); }
 
 @media(max-width:600px) {
   .cta-form { flex-direction: column; }
   .cta-box { padding: 40px 24px; }
 }
 
-/* ═══════════════════════════════════════════════
-   FOOTER
-   ═══════════════════════════════════════════════ */
 footer {
   padding: 40px 0;
   border-top: 1px solid var(--border);
@@ -1086,7 +1035,6 @@ footer {
 </head>
 <body>
 
-<!-- ═══ NAVIGATION ═══ -->
 <nav>
   <div class="nav-inner">
     <a href="#" class="logo">
@@ -1103,7 +1051,6 @@ footer {
   </div>
 </nav>
 
-<!-- ═══ HERO ═══ -->
 <section class="hero">
   <div class="hero-bg">
     <div class="orb orb-1"></div>
@@ -1122,7 +1069,7 @@ footer {
       <input type="email" placeholder="Enter your email address" id="heroEmail">
       <button class="btn btn-primary" onclick="joinWaitlist()">Join Waitlist →</button>
     </div>
-    <p class="hero-note">🎁 First <strong>500 users</strong> get lifetime Pro access — free forever.</p>
+    <p class="hero-note">🎁 First <strong>100 users</strong> can lock in the launch deal.</p>
     <div class="stats-bar">
       <div class="stat">
         <div class="stat-num">12K+</div>
@@ -1144,7 +1091,6 @@ footer {
   </div>
 </section>
 
-<!-- ═══ FEATURES ═══ -->
 <section class="features" id="features">
   <div class="container">
     <div class="section-label">Why ContentPilot</div>
@@ -1165,7 +1111,7 @@ footer {
       <div class="feature-card">
         <div class="feature-icon fi-3">🤖</div>
         <h3>AI + GEO Optimized</h3>
-        <p>Not just Google — optimize for AI search engines like ChatGPT, Perplexity, and Google AI Overviews. Future-proof your content.</p>
+        <p>Not just Google — optimize for AI search engines like ChatGPT, Perplexity, and AI Overviews. Future-proof your content.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon fi-4">🔗</div>
@@ -1186,7 +1132,6 @@ footer {
   </div>
 </section>
 
-<!-- ═══ LIVE DEMO ═══ -->
 <section class="demo-section" id="demo">
   <div class="container" style="text-align:center;">
     <div class="section-label">Try It Now</div>
@@ -1273,80 +1218,94 @@ footer {
   </div>
 </section>
 
-<!-- ═══ PRICING ═══ -->
 <section class="pricing" id="pricing">
   <div class="container" style="text-align:center;">
     <div class="section-label">Simple Pricing</div>
-    <div class="section-title">Start free. Scale when you're ready.</div>
-    <p class="section-desc" style="margin:0 auto;">No hidden fees. No per-word charges. Cancel anytime.</p>
+    <div class="section-title">Affordable pricing for early growth</div>
+    <p class="section-desc" style="margin:0 auto;">Start free, upgrade only when your content workflow grows.</p>
   </div>
   <div class="container">
     <div class="pricing-grid">
       <div class="price-card">
         <div class="price-tier">Free</div>
         <div class="price-amount">$0<span>/mo</span></div>
-        <div class="price-desc">Perfect for trying ContentPilot risk-free.</div>
+        <div class="price-desc">Best for testing ContentPilot with no risk.</div>
         <ul class="price-features">
           <li>3 articles per month</li>
-          <li>Basic SEO scoring</li>
+          <li>Basic SEO score</li>
           <li>1 language</li>
-          <li>Community support</li>
-          <li class="dimmed">Internal linking</li>
-          <li class="dimmed">API access</li>
+          <li>Standard editor</li>
+          <li class="dimmed">Advanced optimization</li>
+          <li class="dimmed">Priority support</li>
         </ul>
-        <button class="btn btn-outline price-btn">Get Started Free</button>
+        <button class="btn btn-outline price-btn">Start Free</button>
+      </div>
+
+      <div class="price-card">
+        <div class="price-tier">Starter</div>
+        <div class="price-amount">$7<span>/mo</span></div>
+        <div class="price-desc">Perfect for solo creators and bloggers.</div>
+        <ul class="price-features">
+          <li>20 articles per month</li>
+          <li>Multi-language support</li>
+          <li>SEO scoring</li>
+          <li>Export tools</li>
+          <li>Email support</li>
+          <li class="dimmed">Team features</li>
+        </ul>
+        <button class="btn btn-outline price-btn">Choose Starter</button>
       </div>
 
       <div class="price-card featured">
         <div class="price-badge">Most Popular</div>
         <div class="price-tier">Pro</div>
-        <div class="price-amount">$19<span>/mo</span></div>
-        <div class="price-desc">For bloggers & marketers scaling content.</div>
+        <div class="price-amount">$15<span>/mo</span></div>
+        <div class="price-desc">For marketers publishing consistently.</div>
         <ul class="price-features">
-          <li>50 articles per month</li>
-          <li>Advanced SEO + GEO score</li>
-          <li>All 40+ languages</li>
-          <li>Smart internal linking</li>
-          <li>WordPress integration</li>
+          <li>75 articles per month</li>
+          <li>Advanced SEO optimization</li>
+          <li>All languages</li>
+          <li>Faster generation</li>
+          <li>Priority exports</li>
           <li>Priority support</li>
         </ul>
-        <button class="btn btn-primary price-btn">Start Pro Trial →</button>
+        <button class="btn btn-primary price-btn">Choose Pro →</button>
       </div>
 
       <div class="price-card">
         <div class="price-tier">Business</div>
-        <div class="price-amount">$49<span>/mo</span></div>
-        <div class="price-desc">For agencies & teams producing at scale.</div>
+        <div class="price-amount">$29<span>/mo</span></div>
+        <div class="price-desc">For agencies and growing teams.</div>
         <ul class="price-features">
-          <li>Unlimited articles</li>
-          <li>Competitor analysis</li>
-          <li>AI visibility tracking</li>
-          <li>Team collaboration</li>
-          <li>API access</li>
-          <li>Dedicated support</li>
+          <li>250 articles per month</li>
+          <li>Team workflow</li>
+          <li>All export options</li>
+          <li>Priority support</li>
+          <li>Advanced optimization</li>
+          <li>Commercial use</li>
         </ul>
-        <button class="btn btn-outline price-btn">Contact Sales</button>
+        <button class="btn btn-outline price-btn">Choose Business</button>
       </div>
 
-      <div class="price-card">
-        <div class="price-tier">Lifetime Deal</div>
-        <div class="price-amount">$299<span>once</span></div>
-        <div class="price-desc">Pro plan forever. Limited availability.</div>
+      <div class="price-card featured launch-offer">
+        <div class="price-badge" style="background: linear-gradient(135deg, var(--gold), #f97316);">Launch Offer</div>
+        <div class="price-tier">Launch Deal</div>
+        <div class="price-amount">$79<span> once</span></div>
+        <div class="price-desc">Limited lifetime access for the first 100 early supporters.</div>
         <ul class="price-features">
-          <li>Everything in Pro</li>
           <li>Lifetime access</li>
-          <li>All future updates</li>
-          <li>Early adopter badge</li>
-          <li>Priority feature requests</li>
+          <li>Everything in Pro</li>
+          <li>Future updates included</li>
           <li>Founding member perks</li>
+          <li>Priority feature requests</li>
+          <li>No recurring payment</li>
         </ul>
-        <button class="btn btn-primary price-btn" style="background: linear-gradient(135deg, var(--gold), #f97316);">Grab Lifetime Deal 🔥</button>
+        <button class="btn btn-primary price-btn" style="background: linear-gradient(135deg, var(--gold), #f97316);">Get Launch Deal 🔥</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ TESTIMONIALS ═══ -->
 <section class="testimonials" id="testimonials">
   <div class="container" style="text-align:center;">
     <div class="section-label">Loved by Early Users</div>
@@ -1412,7 +1371,7 @@ footer {
       </div>
       <div class="test-card">
         <div class="test-stars">★★★★★</div>
-        <div class="test-quote">"The lifetime deal was a no-brainer. Already ranked 3 articles on page 1 in my first month. The competitor analysis shows exactly what gaps to fill."</div>
+        <div class="test-quote">"The launch deal was a no-brainer. Already ranked 3 articles on page 1 in my first month. The competitor analysis shows exactly what gaps to fill."</div>
         <div class="test-author">
           <div class="test-avatar">JT</div>
           <div>
@@ -1425,12 +1384,11 @@ footer {
   </div>
 </section>
 
-<!-- ═══ CTA ═══ -->
 <section class="cta-section" id="cta">
   <div class="container">
     <div class="cta-box">
       <h2>Ready to write content that<br><span class="gradient-text">actually ranks?</span></h2>
-      <p>Join 12,000+ marketers on the waitlist. Be among the first 500 to get lifetime Pro access — completely free.</p>
+      <p>Join the waitlist and be among the first 100 users to lock in the launch deal.</p>
       <div class="cta-form">
         <input type="email" placeholder="you@company.com" id="ctaEmail">
         <button class="btn btn-primary" onclick="joinWaitlist()">Join the Waitlist →</button>
@@ -1439,7 +1397,6 @@ footer {
   </div>
 </section>
 
-<!-- ═══ FOOTER ═══ -->
 <footer>
   <div class="footer-inner">
     <div class="footer-copy">© 2026 ContentPilot. All rights reserved.</div>
@@ -1452,73 +1409,63 @@ footer {
   </div>
 </footer>
 
-<!-- ═══ SCRIPTS ═══ -->
 <script>
 function joinWaitlist() {
-  const heroEmail = document.getElementById('heroEmail');
-  const ctaEmail = document.getElementById('ctaEmail');
+  const heroEmail = document.getElementById("heroEmail");
+  const ctaEmail = document.getElementById("ctaEmail");
   const email = heroEmail.value || ctaEmail.value;
-  
-  if (!email || !email.includes('@')) {
-    alert('Please enter a valid email address.');
+
+  if (!email || !email.includes("@")) {
+    alert("Please enter a valid email address.");
     return;
   }
-  
-  // In production, this would POST to your backend
-  alert(`🎉 Welcome aboard, ${email}!\n\nYou're on the ContentPilot waitlist.\nWe'll notify you when early access opens.`);
-  heroEmail.value = '';
-  ctaEmail.value = '';
+
+  alert("Welcome aboard, " + email + "! You are on the ContentPilot waitlist.");
+  heroEmail.value = "";
+  ctaEmail.value = "";
 }
 
 function runDemo() {
-  const keyword = document.getElementById('demoKeyword').value || 'best AI writing tools for SEO';
-  const lang = document.getElementById('demoLang').value;
-  
-  // Hide placeholder, show loading
-  document.getElementById('demoPlaceholder').style.display = 'none';
-  document.getElementById('demoResult').classList.remove('active');
-  document.getElementById('demoLoading').classList.add('active');
-  document.getElementById('loadingKeyword').textContent = keyword;
-  
-  // Generate dynamic title based on keyword
-  const titles = {
-    'default': `The Complete Guide to ${keyword.charAt(0).toUpperCase() + keyword.slice(1)}: Expert Analysis for 2026`
-  };
-  
-  // Simulate processing delay
+  const keyword = document.getElementById("demoKeyword").value || "best AI writing tools for SEO";
+
+  document.getElementById("demoPlaceholder").style.display = "none";
+  document.getElementById("demoResult").classList.remove("active");
+  document.getElementById("demoLoading").classList.add("active");
+  document.getElementById("loadingKeyword").textContent = keyword;
+
+  const title = "The Complete Guide to " + keyword.charAt(0).toUpperCase() + keyword.slice(1) + ": Expert Analysis for 2026";
+
   setTimeout(() => {
-    document.getElementById('demoLoading').classList.remove('active');
-    document.getElementById('genTitle').textContent = titles['default'];
-    document.getElementById('demoResult').classList.add('active');
+    document.getElementById("demoLoading").classList.remove("active");
+    document.getElementById("genTitle").textContent = title;
+    document.getElementById("demoResult").classList.add("active");
   }, 2800);
 }
 
-// Smooth scroll for nav links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
+document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+  anchor.addEventListener("click", function(e) {
     e.preventDefault();
-    const target = document.querySelector(this.getAttribute('href'));
+    const target = document.querySelector(this.getAttribute("href"));
     if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   });
 });
 
-// Scroll-triggered animations
-const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
 const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
+  entries.forEach((entry) => {
     if (entry.isIntersecting) {
-      entry.target.style.opacity = '1';
-      entry.target.style.transform = 'translateY(0)';
+      entry.target.style.opacity = "1";
+      entry.target.style.transform = "translateY(0)";
     }
   });
 }, observerOptions);
 
-document.querySelectorAll('.feature-card, .price-card, .test-card, .gap-card').forEach(el => {
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(24px)';
-  el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+document.querySelectorAll(".feature-card, .price-card, .test-card").forEach((el) => {
+  el.style.opacity = "0";
+  el.style.transform = "translateY(24px)";
+  el.style.transition = "opacity 0.6s ease-out, transform 0.6s ease-out";
   observer.observe(el);
 });
 </script>
