@@ -22,7 +22,6 @@
   --green: #22d3ee;
   --green2: #34d399;
   --gold: #f59e0b;
-  --pink: #ec4899;
 
   --text: #eef2ff;
   --text-secondary: #a5b4cf;
@@ -124,6 +123,7 @@ nav {
 .btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   padding: 12px 28px;
   border-radius: 50px;
@@ -133,6 +133,7 @@ nav {
   border: none;
   cursor: pointer;
   transition: all 0.3s;
+  white-space: nowrap;
 }
 
 .btn-primary {
@@ -308,13 +309,15 @@ nav {
   display: flex;
   gap: 12px;
   justify-content: center;
-  max-width: 520px;
+  align-items: center;
+  max-width: 760px;
   margin: 0 auto 20px;
   animation: fadeInUp 0.8s ease-out 0.3s both;
 }
 
 .waitlist-form input {
   flex: 1;
+  min-width: 240px;
   padding: 16px 24px;
   background: rgba(255,255,255,0.05);
   border: 1px solid var(--border);
@@ -331,11 +334,6 @@ nav {
 .waitlist-form input:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-glow);
-}
-
-.waitlist-form .btn-primary {
-  white-space: nowrap;
-  padding: 16px 32px;
 }
 
 .hero-note {
@@ -369,7 +367,7 @@ nav {
   margin-top: 2px;
 }
 
-@media(max-width:600px) {
+@media(max-width:700px) {
   .waitlist-form { flex-direction: column; }
   .stats-bar { gap: 24px; flex-wrap: wrap; }
   .stat-num { font-size: 1.5rem; }
@@ -971,12 +969,14 @@ nav {
   display: flex;
   gap: 12px;
   justify-content: center;
-  max-width: 480px;
+  align-items: center;
+  max-width: 760px;
   margin: 0 auto;
 }
 
 .cta-form input {
   flex: 1;
+  min-width: 240px;
   padding: 16px 24px;
   background: rgba(0,0,0,0.4);
   border: 1px solid var(--border);
@@ -989,7 +989,7 @@ nav {
 
 .cta-form input:focus { border-color: var(--accent); }
 
-@media(max-width:600px) {
+@media(max-width:700px) {
   .cta-form { flex-direction: column; }
   .cta-box { padding: 40px 24px; }
 }
@@ -1046,7 +1046,7 @@ footer {
       <li><a href="#demo">Demo</a></li>
       <li><a href="#pricing">Pricing</a></li>
       <li><a href="#testimonials">Reviews</a></li>
-      <li><a href="#cta" class="btn btn-primary btn-nav">Join Waitlist →</a></li>
+      <li><a href="/app" class="btn btn-primary btn-nav">Try the App →</a></li>
     </ul>
   </div>
 </nav>
@@ -1068,6 +1068,7 @@ footer {
     <div class="waitlist-form">
       <input type="email" placeholder="Enter your email address" id="heroEmail">
       <button class="btn btn-primary" onclick="joinWaitlist()">Join Waitlist →</button>
+      <a href="/app" class="btn btn-outline">Try the App</a>
     </div>
     <p class="hero-note">🎁 First <strong>100 users</strong> can lock in the launch deal.</p>
     <div class="stats-bar">
@@ -1156,10 +1157,10 @@ footer {
             <label>Language</label>
             <select id="demoLang">
               <option>English</option>
-              <option>Türkçe</option>
-              <option>Español</option>
+              <option>Turkce</option>
+              <option>Espanol</option>
               <option>Deutsch</option>
-              <option>العربية</option>
+              <option>Arabic</option>
             </select>
           </div>
           <div class="demo-select-wrapper">
@@ -1181,9 +1182,12 @@ footer {
             </select>
           </div>
         </div>
-        <button class="btn btn-primary btn-generate" onclick="runDemo()">
-          ✦ Generate SEO Article
-        </button>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <button class="btn btn-primary btn-generate" onclick="runDemo()" style="flex:1;">
+            ✦ Generate SEO Preview
+          </button>
+          <a href="/app" class="btn btn-outline" style="flex:1;">Open Full Editor</a>
+        </div>
         <div class="demo-output">
           <div class="demo-output-placeholder" id="demoPlaceholder">
             <div class="big-icon">✦</div>
@@ -1200,10 +1204,10 @@ footer {
               <div class="gen-score-label"><strong>SEO Score</strong> — Outperforms 87% of competing articles</div>
             </div>
             <div class="gen-meta">
-              <span class="gen-meta-item">📝 1,480 words</span>
-              <span class="gen-meta-item">⏱ 6 min read</span>
-              <span class="gen-meta-item">🔗 4 internal links</span>
-              <span class="gen-meta-item">🎯 14 semantic keywords</span>
+              <span class="gen-meta-item">1,480 words</span>
+              <span class="gen-meta-item">6 min read</span>
+              <span class="gen-meta-item">4 internal links</span>
+              <span class="gen-meta-item">14 semantic keywords</span>
             </div>
             <div class="gen-title" id="genTitle">The 7 Best AI Writing Tools for SEO in 2026: An In-Depth Comparison</div>
             <p class="gen-paragraph">Finding the right <span class="gen-keyword">AI writing tool for SEO</span> can feel overwhelming with dozens of options flooding the market. After testing every major platform over the past year, we've narrowed down the tools that actually help your content rank — not just get written faster...</p>
@@ -1238,7 +1242,7 @@ footer {
           <li class="dimmed">Advanced optimization</li>
           <li class="dimmed">Priority support</li>
         </ul>
-        <button class="btn btn-outline price-btn">Start Free</button>
+        <a href="/app" class="btn btn-outline price-btn">Start Free</a>
       </div>
 
       <div class="price-card">
@@ -1253,7 +1257,7 @@ footer {
           <li>Email support</li>
           <li class="dimmed">Team features</li>
         </ul>
-        <button class="btn btn-outline price-btn">Choose Starter</button>
+        <button class="btn btn-outline price-btn" onclick="joinWaitlist()">Choose Starter</button>
       </div>
 
       <div class="price-card featured">
@@ -1269,7 +1273,7 @@ footer {
           <li>Priority exports</li>
           <li>Priority support</li>
         </ul>
-        <button class="btn btn-primary price-btn">Choose Pro →</button>
+        <button class="btn btn-primary price-btn" onclick="joinWaitlist()">Choose Pro →</button>
       </div>
 
       <div class="price-card">
@@ -1284,7 +1288,7 @@ footer {
           <li>Advanced optimization</li>
           <li>Commercial use</li>
         </ul>
-        <button class="btn btn-outline price-btn">Choose Business</button>
+        <button class="btn btn-outline price-btn" onclick="joinWaitlist()">Choose Business</button>
       </div>
 
       <div class="price-card featured launch-offer">
@@ -1300,7 +1304,7 @@ footer {
           <li>Priority feature requests</li>
           <li>No recurring payment</li>
         </ul>
-        <button class="btn btn-primary price-btn" style="background: linear-gradient(135deg, var(--gold), #f97316);">Get Launch Deal 🔥</button>
+        <button class="btn btn-primary price-btn" style="background: linear-gradient(135deg, var(--gold), #f97316);" onclick="joinWaitlist()">Get Launch Deal</button>
       </div>
     </div>
   </div>
@@ -1388,10 +1392,11 @@ footer {
   <div class="container">
     <div class="cta-box">
       <h2>Ready to write content that<br><span class="gradient-text">actually ranks?</span></h2>
-      <p>Join the waitlist and be among the first 100 users to lock in the launch deal.</p>
+      <p>Join the waitlist and be among the first 100 users to lock in the launch deal, or open the app right now and start testing.</p>
       <div class="cta-form">
         <input type="email" placeholder="you@company.com" id="ctaEmail">
         <button class="btn btn-primary" onclick="joinWaitlist()">Join the Waitlist →</button>
+        <a href="/app" class="btn btn-outline">Start Writing</a>
       </div>
     </div>
   </div>
