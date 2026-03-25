@@ -307,12 +307,21 @@ nav {
 
 .waitlist-form {
   display: flex;
-  gap: 12px;
+  flex-direction: column;
+  gap: 14px;
   justify-content: center;
   align-items: center;
   max-width: 760px;
   margin: 0 auto 20px;
   animation: fadeInUp 0.8s ease-out 0.3s both;
+}
+
+.waitlist-row {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
 }
 
 .waitlist-form input {
@@ -334,6 +343,15 @@ nav {
 .waitlist-form input:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.hero-app-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 240px;
+  padding-left: 32px;
+  padding-right: 32px;
 }
 
 .hero-note {
@@ -368,7 +386,7 @@ nav {
 }
 
 @media(max-width:700px) {
-  .waitlist-form { flex-direction: column; }
+  .waitlist-row { flex-direction: column; }
   .stats-bar { gap: 24px; flex-wrap: wrap; }
   .stat-num { font-size: 1.5rem; }
 }
@@ -1066,9 +1084,11 @@ footer {
     <h1>Write SEO Content<br>That <span class="gradient-text">Actually Ranks</span></h1>
     <p class="hero-sub">Your AI co-pilot analyzes top-ranking pages, generates optimized content, and gives you a real-time SEO score — so every article is built to reach Page 1.</p>
     <div class="waitlist-form">
-      <input type="email" placeholder="Enter your email address" id="heroEmail">
-      <button class="btn btn-primary" onclick="joinWaitlist()">Join Waitlist →</button>
-      <a href="/app" class="btn btn-outline">Try the App</a>
+      <div class="waitlist-row">
+        <input type="email" placeholder="Enter your email address" id="heroEmail">
+        <button class="btn btn-primary" onclick="joinWaitlist()">Join Waitlist →</button>
+      </div>
+      <a href="/app" class="btn btn-outline hero-app-link">Try the App Now</a>
     </div>
     <p class="hero-note">🎁 First <strong>100 users</strong> can lock in the launch deal.</p>
     <div class="stats-bar">
