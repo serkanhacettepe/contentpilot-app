@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — ContentPilot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070711;
+      --card: #111126;
+      --border: rgba(255,255,255,0.08);
+      --text: #eef2ff;
+      --muted: #94a3b8;
+      --accent: #6366f1;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Outfit", sans-serif;
+      padding: 32px 20px 80px;
+      line-height: 1.75;
+    }
+
+    .wrap {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: rgba(17,17,38,0.92);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px 28px;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin-bottom: 12px;
+      letter-spacing: -1px;
+    }
+
+    p {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 14px;
+    }
+
+    .contact-box {
+      margin-top: 20px;
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.03);
+    }
+
+    .label {
+      color: var(--text);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    a {
+      color: #c7d2fe;
+      text-decoration: none;
+    }
+
+    .toplink {
+      display: inline-block;
+      margin-bottom: 18px;
+      color: #c7d2fe;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="toplink" href="/landing.html">‹ Back to ContentPilot</a>
+    <div class="card">
+      <h1>Contact</h1>
+      <p>If you need help with ContentPilot, have a billing question, or want to contact us about early access, reach out anytime.</p>
+
+      <div class="contact-box">
+        <div class="label">Support Email</div>
+        <p><a href="mailto:support@getcontentpilot.com">support@getcontentpilot.com</a></p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
