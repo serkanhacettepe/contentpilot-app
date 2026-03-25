@@ -940,16 +940,16 @@ footer {
     <h1>Write SEO Content<br>That <span class="gradient-text">Actually Ranks</span></h1>
     <p class="hero-sub">Your AI co-pilot analyzes top-ranking pages, generates optimized content, and gives you a real-time SEO score — so every article is built to reach Page 1.</p>
 
-    <form class="waitlist-form" name="waitlist" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="submitWaitlist(event, 'hero')">
+    <form class="waitlist-form" name="waitlist" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="submitWaitlist(event)">
       <input type="hidden" name="form-name" value="waitlist">
       <input type="hidden" name="source" value="hero">
+      <input type="hidden" name="redirect" value="/thank-you.html">
       <input type="text" name="bot-field" style="display:none">
       <div class="waitlist-row">
         <input type="email" name="email" placeholder="Enter your email address" id="heroEmail" required>
         <button class="btn btn-primary" type="submit">Join Waitlist →</button>
       </div>
       <a href="/app" class="btn btn-outline hero-app-link">Try the App Now</a>
-      <div class="form-success" id="heroSuccess">Thanks, you're on the waitlist.</div>
     </form>
 
     <p class="hero-note">🎁 First <strong>100 users</strong> can lock in the launch deal.</p>
@@ -1277,15 +1277,15 @@ footer {
       <h2>Ready to write content that<br><span class="gradient-text">actually ranks?</span></h2>
       <p>Join the waitlist and be among the first 100 users to lock in the launch deal, or open the app right now and start testing.</p>
 
-      <form class="cta-form" name="waitlist" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="submitWaitlist(event, 'cta')">
+      <form class="cta-form" name="waitlist" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="submitWaitlist(event)">
         <input type="hidden" name="form-name" value="waitlist">
         <input type="hidden" name="source" value="cta">
+        <input type="hidden" name="redirect" value="/thank-you.html">
         <input type="text" name="bot-field" style="display:none">
         <input type="email" name="email" placeholder="you@company.com" id="ctaEmail" required>
         <button class="btn btn-primary" type="submit">Join the Waitlist →</button>
         <a href="/app" class="btn btn-outline">Start Writing</a>
       </form>
-      <div class="form-success" id="ctaSuccess">Thanks, you're on the waitlist.</div>
     </div>
   </div>
 </section>
@@ -1303,12 +1303,12 @@ footer {
 </footer>
 
 <script>
-async function submitWaitlist(event, source) {
+async function submitWaitlist(event) {
   event.preventDefault();
 
   const form = event.target;
-  const successEl = document.getElementById(source + "Success");
   const formData = new FormData(form);
+  const redirectUrl = formData.get("redirect") || "/thank-you.html";
 
   try {
     await fetch("/", {
@@ -1317,11 +1317,7 @@ async function submitWaitlist(event, source) {
       body: new URLSearchParams(formData).toString(),
     });
 
-    form.reset();
-    if (successEl) {
-      successEl.classList.add("show");
-      setTimeout(() => successEl.classList.remove("show"), 4000);
-    }
+    window.location.href = redirectUrl;
   } catch (error) {
     alert("Something went wrong. Please try again.");
   }
