@@ -44,7 +44,7 @@ export async function POST(request) {
     }
 
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 25000);
+    const timeoutId = setTimeout(() => controller.abort(), 55000);
 
     console.log("[Generate] Sending request to Anthropic");
 
