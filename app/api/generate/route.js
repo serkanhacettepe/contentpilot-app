@@ -119,7 +119,7 @@ export async function POST(request) {
     const text = (data.content || [])
       .filter((item) => item.type === "text")
       .map((item) => item.text)
-      .join("\\n\\n");
+      .join("\n\n");
 
     if (!text) {
       console.error("[Generate] Anthropic response missing article text", data);
