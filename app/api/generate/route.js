@@ -1,3 +1,7 @@
+// app/api/generate/route.js
+import { createClient } from "@/lib/supabase-server";
+import { getPlanLimit } from "@/lib/plans";
+
 function buildPrompt({ keyword, language, tone, wordCount }) {
   return `You are ContentPilot, an expert SEO content writer. Generate a comprehensive, well-structured article optimized for the keyword provided.
 
@@ -20,6 +24,14 @@ Then write the full article.`;
 
 export async function POST(request) {
   try {
+    // Auth check
+    const supabase = await createClient();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return Response.json({ error: "Unauthorized." }, { status: 401 });
+    }
+
     const { keyword, language, tone, wordCount } = await request.json();
 
     console.log("[Generate] Request received", {
@@ -28,29 +40,58 @@ export async function POST(request) {
       tone,
       wordCount,
       hasApiKey: Boolean(process.env.ANTHROPIC_API_KEY),
+      userId: user.id,
     });
 
     if (!process.env.ANTHROPIC_API_KEY) {
-      console.error("[Generate] Missing ANTHROPIC_API_KEY");
-      return Response.json(
-        { error: "ANTHROPIC_API_KEY is missing on the server." },
-        { status: 500 }
-      );
+      return Response.json({ error: "ANTHROPIC_API_KEY is missing on the server." }, { status: 500 });
     }
 
     if (!keyword?.trim()) {
-      console.error("[Generate] Missing keyword");
       return Response.json({ error: "Keyword is required." }, { status: 400 });
     }
 
+    // Fetch profile and check usage limit
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("plan, articles_used_this_month, reset_date")
+      .eq("id", user.id)
+      .single();
+
+    if (profileError || !profile) {
+      return Response.json({ error: "User profile not found." }, { status: 500 });
+    }
+
+    // Monthly reset check
+    if (new Date() > new Date(profile.reset_date)) {
+      await supabase
+        .from("profiles")
+        .update({
+          articles_used_this_month: 0,
+          reset_date: (() => { const d = new Date(); d.setMonth(d.getMonth() + 1); return d.toISOString(); })(),
+        })
+        .eq("id", user.id);
+      profile.articles_used_this_month = 0;
+    }
+
+    const limit = getPlanLimit(profile.plan);
+    if (profile.articles_used_this_month >= limit) {
+      return Response.json(
+        {
+          error: `You've used all ${limit} articles for this month. Upgrade your plan to continue.`,
+          limitReached: true,
+        },
+        { status: 403 }
+      );
+    }
+
+    // Call Anthropic with streaming
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 55000);
 
-    console.log("[Generate] Sending streaming request to Anthropic");
-
-    let response;
+    let anthropicResponse;
     try {
-      response = await fetch("https://api.anthropic.com/v1/messages", {
+      anthropicResponse = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -73,44 +114,33 @@ export async function POST(request) {
       });
     } catch (error) {
       clearTimeout(timeoutId);
-      console.error("[Generate] Anthropic fetch failed", error);
-
-      if (error instanceof Error && error.name === "AbortError") {
-        return Response.json(
-          { error: "Anthropic request timed out. Please try again." },
-          { status: 504 }
-        );
+      if (error?.name === "AbortError") {
+        return Response.json({ error: "Request timed out. Please try again." }, { status: 504 });
       }
-
-      return Response.json(
-        {
-          error: error instanceof Error ? error.message : "Anthropic request failed.",
-        },
-        { status: 502 }
-      );
+      return Response.json({ error: error?.message || "Anthropic request failed." }, { status: 502 });
     }
 
     clearTimeout(timeoutId);
-    console.log("[Generate] Anthropic stream started", { status: response.status });
 
-    if (!response.ok) {
-      const errText = await response.text();
+    if (!anthropicResponse.ok) {
+      const errText = await anthropicResponse.text();
       let errData = {};
       try { errData = JSON.parse(errText); } catch {}
-      console.error("[Generate] Anthropic API error", errData);
       return Response.json(
-        { error: errData.error?.message || "Anthropic API request failed" },
-        { status: response.status }
+        { error: errData.error?.message || "Anthropic API error" },
+        { status: anthropicResponse.status }
       );
     }
 
+    // Stream and accumulate
     const encoder = new TextEncoder();
+    let fullText = "";
+
     const stream = new ReadableStream({
       async start(controller) {
-        const reader = response.body.getReader();
+        const reader = anthropicResponse.body.getReader();
         const decoder = new TextDecoder();
         let buffer = "";
-        let charCount = 0;
 
         try {
           while (true) {
@@ -132,16 +162,39 @@ export async function POST(request) {
                   parsed.delta?.type === "text_delta"
                 ) {
                   const chunk = parsed.delta.text;
-                  charCount += chunk.length;
+                  fullText += chunk;
                   controller.enqueue(encoder.encode(chunk));
                 }
               } catch {}
             }
           }
         } catch (err) {
-          console.error("[Generate] Stream read error", err);
+          console.error("[Generate] Stream error", err);
         } finally {
-          console.log("[Generate] Stream complete", { charCount });
+          // Save article and increment counter after streaming
+          if (fullText.trim()) {
+            const lines = fullText.split("\n");
+            const title = lines[0]?.startsWith("# ") ? lines[0].replace(/^#\s+/, "") : keyword;
+            const body = lines[0]?.startsWith("# ") ? lines.slice(1).join("\n").trim() : fullText;
+            const wordCountActual = body.trim().split(/\s+/).length;
+
+            await supabase.from("articles").insert({
+              user_id: user.id,
+              title,
+              content: body,
+              keyword,
+              language,
+              tone,
+              word_count: wordCountActual,
+              seo_score: 0,
+            });
+
+            // Atomic increment to avoid race conditions
+            await supabase.rpc("increment_article_count", { user_id: user.id });
+
+            console.log("[Generate] Article saved", { title, wordCount: wordCountActual });
+          }
+
           controller.close();
         }
       },
@@ -156,11 +209,8 @@ export async function POST(request) {
     });
   } catch (error) {
     console.error("[Generate] Route failed", error);
-
     return Response.json(
-      {
-        error: error instanceof Error ? error.message : "Unexpected server error.",
-      },
+      { error: error?.message || "Unexpected server error." },
       { status: 500 }
     );
   }
