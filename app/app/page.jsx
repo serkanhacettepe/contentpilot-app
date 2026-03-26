@@ -177,7 +177,15 @@ export default function ContentPilotApp() {
 
       clearInterval(phaseInterval);
 
-      const data = await response.json();
+      const rawText = await response.text();
+
+      let data;
+      try {
+        data = JSON.parse(rawText);
+      } catch {
+        throw new Error("Server returned an invalid response. Check the deployment logs.");
+      }
+
       const fullText = data.text || "";
 
       if (!response.ok) {
