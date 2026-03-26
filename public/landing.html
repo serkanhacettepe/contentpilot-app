@@ -908,6 +908,69 @@ nav {
   margin: 0 auto;
 }
 
+.audience-section,
+.reassurance-section,
+.faq-section {
+  padding: 120px 0;
+}
+
+.audience-grid,
+.reassurance-grid,
+.faq-grid {
+  display: grid;
+  gap: 20px;
+  margin-top: 56px;
+}
+
+.audience-grid,
+.reassurance-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.faq-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.audience-card,
+.reassurance-card,
+.faq-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+}
+
+.audience-card h3,
+.reassurance-card h3,
+.faq-card h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.audience-card p,
+.reassurance-card p,
+.faq-card p {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+}
+
+.reassurance-section {
+  background: linear-gradient(180deg, var(--bg-deep), #090922, var(--bg-deep));
+}
+
+.reassurance-card strong {
+  color: var(--green2);
+}
+
+@media(max-width:900px) {
+  .audience-grid,
+  .reassurance-grid,
+  .faq-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 footer {
   padding: 40px 0;
   border-top: 1px solid var(--border);
@@ -1240,6 +1303,90 @@ footer {
           <li>No recurring payment</li>
         </ul>
         <a href="https://getcontentpilot.lemonsqueezy.com/checkout/buy/5162d281-0d2f-4858-80f4-46c5edd75878" class="btn btn-primary price-btn" style="background: linear-gradient(135deg, var(--gold), #f97316);" target="_blank" rel="noopener noreferrer" data-track="plan_select" data-plan="launch_deal" data-billing="lifetime">Get Launch Deal</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="audience-section" id="audience">
+  <div class="container" style="text-align:center;">
+    <div class="section-label">Built For Growth</div>
+    <div class="section-title">Who ContentPilot is for</div>
+    <p class="section-desc" style="margin:0 auto;">ContentPilot is designed for teams and creators who need faster publishing without sacrificing SEO quality.</p>
+  </div>
+  <div class="container">
+    <div class="audience-grid">
+      <div class="audience-card">
+        <h3>Solo creators and bloggers</h3>
+        <p>Turn ideas into optimized articles faster, keep a steady publishing cadence, and stop staring at a blank page.</p>
+      </div>
+      <div class="audience-card">
+        <h3>Marketers and in-house SEO teams</h3>
+        <p>Ship briefs, outlines, and full drafts faster while keeping quality standards high across campaigns and languages.</p>
+      </div>
+      <div class="audience-card">
+        <h3>Agencies managing multiple clients</h3>
+        <p>Standardize content production, speed up delivery, and give clients a workflow that feels more premium and more strategic.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="reassurance-section" id="why-now">
+  <div class="container" style="text-align:center;">
+    <div class="section-label">Why Now</div>
+    <div class="section-title">Why early users are buying now</div>
+    <p class="section-desc" style="margin:0 auto;">Early access keeps the offer simple: lower pricing, direct support, and a chance to shape the roadmap while the product is still moving fast.</p>
+  </div>
+  <div class="container">
+    <div class="reassurance-grid">
+      <div class="reassurance-card">
+        <h3>Launch pricing is lighter</h3>
+        <p>Early buyers lock in lower pricing before the product matures and feature scope expands.</p>
+      </div>
+      <div class="reassurance-card">
+        <h3>Manual activation means real support</h3>
+        <p>Your access is activated manually within <strong>30 minutes</strong>, which also means you can get help from a real person right away.</p>
+      </div>
+      <div class="reassurance-card">
+        <h3>Founding users influence the roadmap</h3>
+        <p>Early customers help shape features, workflows, and prioritization while feedback still moves quickly into the product.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="faq-section" id="faq">
+  <div class="container" style="text-align:center;">
+    <div class="section-label">FAQ</div>
+    <div class="section-title">Questions buyers usually ask</div>
+    <p class="section-desc" style="margin:0 auto;">A few quick answers to reduce uncertainty before someone joins or checks out.</p>
+  </div>
+  <div class="container">
+    <div class="faq-grid">
+      <div class="faq-card">
+        <h3>Is ContentPilot live already?</h3>
+        <p>Yes. The app is usable today, and paid access is currently being rolled out through early access onboarding.</p>
+      </div>
+      <div class="faq-card">
+        <h3>How long does activation take?</h3>
+        <p>Paid access is activated manually within 30 minutes after payment, so buyers know exactly what to expect.</p>
+      </div>
+      <div class="faq-card">
+        <h3>Who is it best for?</h3>
+        <p>It works best for creators, marketers, and agencies that need to publish SEO-focused content consistently and faster.</p>
+      </div>
+      <div class="faq-card">
+        <h3>Can I start for free first?</h3>
+        <p>Yes. There is a free option for testing the workflow before upgrading to a paid plan.</p>
+      </div>
+      <div class="faq-card">
+        <h3>Do you support multiple languages?</h3>
+        <p>Yes. ContentPilot is built for multilingual content workflows, including Turkish and other major publishing languages.</p>
+      </div>
+      <div class="faq-card">
+        <h3>What happens after I pay?</h3>
+        <p>You receive confirmation immediately, then your access is activated and you can continue inside the app with your plan enabled.</p>
       </div>
     </div>
   </div>
