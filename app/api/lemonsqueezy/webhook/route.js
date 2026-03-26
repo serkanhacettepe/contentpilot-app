@@ -1,45 +1,41 @@
+// app/api/lemonsqueezy/webhook/route.js
 import crypto from "node:crypto";
 import { NextResponse } from "next/server";
+import { createServiceClient } from "@/lib/supabase-server";
 
 function verifySignature(rawBody, signature, secret) {
   if (!signature || !secret || !rawBody) return false;
-
   const digest = Buffer.from(
     crypto.createHmac("sha256", secret).update(rawBody).digest("hex"),
     "hex"
   );
-
   const sig = Buffer.from(signature, "hex");
-
   if (digest.length !== sig.length) return false;
-
   return crypto.timingSafeEqual(digest, sig);
 }
 
+function getVariantIdToPlan() {
+  const map = {};
+  const entries = [
+    [process.env.LEMONSQUEEZY_STARTER_VARIANT_ID, "starter"],
+    [process.env.LEMONSQUEEZY_PRO_VARIANT_ID, "pro"],
+    [process.env.LEMONSQUEEZY_BUSINESS_VARIANT_ID, "business"],
+    [process.env.LEMONSQUEEZY_LAUNCH_VARIANT_ID, "business"],
+  ];
+  for (const [id, plan] of entries) {
+    if (id) map[id] = plan;
+  }
+  return map;
+}
+
 function pickCustomerEmail(attributes) {
-  return (
-    attributes.user_email ||
-    attributes.customer_email ||
-    attributes.email ||
-    null
-  );
+  return attributes.user_email || attributes.customer_email || attributes.email || null;
 }
 
-function pickCustomerName(attributes) {
+function pickVariantId(attributes) {
   return (
-    attributes.user_name ||
-    attributes.customer_name ||
-    attributes.name ||
-    null
-  );
-}
-
-function pickProductName(attributes) {
-  return (
-    attributes.product_name ||
-    attributes.variant_name ||
-    attributes.first_order_item?.product_name ||
-    attributes.first_order_item?.variant_name ||
+    attributes.variant_id ||
+    attributes.first_order_item?.variant_id ||
     null
   );
 }
@@ -48,10 +44,7 @@ export async function POST(request) {
   const secret = process.env.LEMONSQUEEZY_WEBHOOK_SECRET;
 
   if (!secret) {
-    return NextResponse.json(
-      { error: "Missing webhook secret" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Missing webhook secret" }, { status: 500 });
   }
 
   const rawBody = await request.text();
@@ -63,7 +56,6 @@ export async function POST(request) {
   }
 
   let payload;
-
   try {
     payload = JSON.parse(rawBody);
   } catch {
@@ -72,33 +64,33 @@ export async function POST(request) {
 
   const attributes = payload?.data?.attributes || {};
   const email = pickCustomerEmail(attributes);
-  const name = pickCustomerName(attributes);
-  const productName = pickProductName(attributes);
-  const status = attributes.status || null;
-  const orderId = attributes.order_id || payload?.data?.id || null;
-  const customerId = attributes.customer_id || null;
+  const variantId = String(pickVariantId(attributes) || "");
+  const variantMap = getVariantIdToPlan();
+  const plan = variantMap[variantId] || null;
 
-  console.log("[LemonSqueezy] Manual activation needed");
-  console.log(
-    JSON.stringify(
-      {
-        eventName,
-        email,
-        name,
-        productName,
-        status,
-        orderId,
-        customerId,
-      },
-      null,
-      2
-    )
-  );
+  console.log("[LemonSqueezy] Event received", { eventName, email, variantId, plan });
 
-  return NextResponse.json({
-    received: true,
-    eventName,
-    email,
-    productName,
-  });
+  const activationEvents = ["order_created", "subscription_created", "subscription_updated"];
+  const cancellationEvents = ["subscription_cancelled"];
+
+  if (activationEvents.includes(eventName) && email && plan) {
+    const supabase = await createServiceClient();
+    const { error } = await supabase
+      .from("profiles")
+      .update({ plan })
+      .eq("email", email);
+
+    if (error) {
+      console.error("[LemonSqueezy] Failed to update plan", error);
+      return NextResponse.json({ error: "DB update failed" }, { status: 500 });
+    }
+
+    console.log("[LemonSqueezy] Plan updated", { email, plan });
+  } else if (cancellationEvents.includes(eventName) && email) {
+    console.log("[LemonSqueezy] Cancellation — manual review needed", { email });
+  } else {
+    console.log("[LemonSqueezy] No action taken", { eventName, email, variantId });
+  }
+
+  return NextResponse.json({ received: true, eventName });
 }
