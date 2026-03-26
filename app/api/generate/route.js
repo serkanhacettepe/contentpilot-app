@@ -1,4 +1,4 @@
-function buildPrompt({ keyword, language, tone, wordCount }) {
+﻿function buildPrompt({ keyword, language, tone, wordCount }) {
   return `You are ContentPilot, an expert SEO content writer. Generate a comprehensive, well-structured article optimized for the keyword provided.
 
 RULES:
@@ -119,9 +119,7 @@ export async function POST(request) {
     const text = (data.content || [])
       .filter((item) => item.type === "text")
       .map((item) => item.text)
-      .join("
-
-");
+      .join("\\n\\n");
 
     if (!text) {
       console.error("[Generate] Anthropic response missing article text", data);
