@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import { useMemo } from "react";
+import { createClient } from "@/lib/supabase";
+import { getPlanLimit } from "@/lib/plans";
 
 const LANGUAGES = [
   { code: "en", label: "English", flag: "GB" },
@@ -141,6 +144,11 @@ export default function ContentPilotApp() {
   const [loadingPhase, setLoadingPhase] = useState(0);
   const contentRef = useRef(null);
 
+  const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const [articles, setArticles] = useState([]);
+  const supabase = useMemo(() => createClient(), []);
+
   const langLabel = LANGUAGES.find((l) => l.code === language)?.label || "English";
 
   useEffect(() => {
@@ -149,9 +157,38 @@ export default function ContentPilotApp() {
     }
   }, [generatedContent, keyword]);
 
+  useEffect(() => {
+    async function loadUserData() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      setUser(user);
+
+      const { data: profileData } = await supabase
+        .from("profiles")
+        .select("plan, articles_used_this_month, reset_date")
+        .eq("id", user.id)
+        .single();
+      if (profileData) setProfile(profileData);
+
+      const { data: articleData } = await supabase
+        .from("articles")
+        .select("id, title, keyword, created_at")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false })
+        .limit(50);
+      if (articleData) setArticles(articleData);
+    }
+    loadUserData();
+  }, [supabase]);
+
   const generateArticle = useCallback(async () => {
     if (!keyword.trim()) {
       setError("Please enter a target keyword.");
+      return;
+    }
+
+    if (profile && profile.articles_used_this_month >= getPlanLimit(profile.plan)) {
+      setError(`You've used all ${getPlanLimit(profile.plan)} articles this month. Upgrade your plan.`);
       return;
     }
 
@@ -211,13 +248,52 @@ export default function ContentPilotApp() {
       setGeneratedTitle(title);
       setGeneratedContent(body);
       setStreamText("");
+
+      // Refresh profile counter and article list
+      if (user) {
+        const { data: updatedProfile } = await supabase
+          .from("profiles")
+          .select("plan, articles_used_this_month, reset_date")
+          .eq("id", user.id)
+          .single();
+        if (updatedProfile) setProfile(updatedProfile);
+
+        const { data: updatedArticles } = await supabase
+          .from("articles")
+          .select("id, title, keyword, created_at")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false })
+          .limit(50);
+        if (updatedArticles) setArticles(updatedArticles);
+      }
+
       setIsGenerating(false);
     } catch (err) {
       clearInterval(phaseInterval);
       setError(`Generation failed: ${err.message}`);
       setIsGenerating(false);
     }
-  }, [keyword, langLabel, tone, wordCount]);
+  }, [keyword, langLabel, tone, wordCount, user, profile, supabase]);
+
+  async function loadArticle(articleId) {
+    const { data } = await supabase
+      .from("articles")
+      .select("title, content, keyword, seo_score")
+      .eq("id", articleId)
+      .single();
+    if (!data) return;
+    setGeneratedTitle(data.title);
+    setGeneratedContent(data.content);
+    setStreamText("");
+    setKeyword(data.keyword);
+    setSeoScore(data.seo_score ? { total: data.seo_score, breakdown: {}, stats: {} } : null);
+    setActiveTab("editor");
+  }
+
+  async function handleLogout() {
+    await supabase.auth.signOut();
+    window.location.href = "/login";
+  }
 
   const copyToClipboard = (text, format) => {
     navigator.clipboard.writeText(text).then(() => {
@@ -318,27 +394,60 @@ export default function ContentPilotApp() {
             MVP
           </span>
         </div>
-        <div style={{ display: "flex", gap: 8 }}>
-          {["editor", "score", "export"].map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              style={{
-                padding: "6px 16px",
-                borderRadius: 8,
-                border: "1px solid",
-                borderColor: activeTab === tab ? "#6366f1" : "rgba(255,255,255,0.08)",
-                background: activeTab === tab ? "rgba(99,102,241,0.15)" : "transparent",
-                color: activeTab === tab ? "#a5b4fc" : "#64748b",
-                fontSize: 13,
-                fontWeight: 600,
-                cursor: "pointer",
-                textTransform: "capitalize",
-              }}
-            >
-              {tab === "editor" ? "Editor" : tab === "score" ? "SEO Score" : "Export"}
-            </button>
-          ))}
+        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <div style={{ display: "flex", gap: 8 }}>
+            {["editor", "score", "export"].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                style={{
+                  padding: "6px 16px",
+                  borderRadius: 8,
+                  border: "1px solid",
+                  borderColor: activeTab === tab ? "#6366f1" : "rgba(255,255,255,0.08)",
+                  background: activeTab === tab ? "rgba(99,102,241,0.15)" : "transparent",
+                  color: activeTab === tab ? "#a5b4fc" : "#64748b",
+                  fontSize: 13,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  textTransform: "capitalize",
+                }}
+              >
+                {tab === "editor" ? "Editor" : tab === "score" ? "SEO Score" : "Export"}
+              </button>
+            ))}
+          </div>
+          {user && profile && (
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <span style={{ fontSize: 12, color: "#64748b" }}>{user.email}</span>
+              <span style={{
+                fontSize: 11, fontWeight: 700, padding: "2px 8px", borderRadius: 20,
+                background: profile.plan === "free" ? "rgba(100,116,139,0.2)" :
+                            profile.plan === "starter" ? "rgba(59,130,246,0.2)" :
+                            profile.plan === "pro" ? "rgba(99,102,241,0.2)" : "rgba(245,158,11,0.2)",
+                color: profile.plan === "free" ? "#94a3b8" :
+                       profile.plan === "starter" ? "#60a5fa" :
+                       profile.plan === "pro" ? "#a5b4fc" : "#fbbf24",
+                textTransform: "uppercase", letterSpacing: 1,
+              }}>
+                {profile.plan}
+              </span>
+              <span style={{ fontSize: 12, color: "#64748b" }}>
+                {profile.articles_used_this_month}/{getPlanLimit(profile.plan)}
+              </span>
+              <button
+                onClick={handleLogout}
+                style={{
+                  padding: "5px 12px", borderRadius: 8,
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  background: "transparent", color: "#64748b",
+                  fontSize: 12, cursor: "pointer",
+                }}
+              >
+                Logout
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -459,25 +568,39 @@ export default function ContentPilotApp() {
             ))}
           </div>
 
-          <button
-            onClick={generateArticle}
-            disabled={isGenerating}
-            style={{
-              width: "100%",
-              padding: "14px 20px",
-              borderRadius: 12,
-              border: "none",
-              background: isGenerating ? "rgba(99,102,241,0.3)" : "linear-gradient(135deg, #6366f1, #7c3aed)",
-              color: "#fff",
-              fontSize: 15,
-              fontWeight: 700,
-              cursor: isGenerating ? "not-allowed" : "pointer",
-              boxShadow: isGenerating ? "none" : "0 4px 20px rgba(99,102,241,0.3)",
-              letterSpacing: 0.3,
-            }}
-          >
-            {isGenerating ? "Generating..." : "Generate Article"}
-          </button>
+          {profile && profile.articles_used_this_month >= getPlanLimit(profile.plan) ? (
+            <div style={{
+              padding: "12px 14px", borderRadius: 12,
+              background: "rgba(248,113,113,0.08)",
+              border: "1px solid rgba(248,113,113,0.2)",
+              fontSize: 13, color: "#f87171", textAlign: "center",
+            }}>
+              You've used all {getPlanLimit(profile.plan)} articles this month.{" "}
+              <a href="/#pricing" style={{ color: "#818cf8", textDecoration: "underline" }}>
+                Upgrade →
+              </a>
+            </div>
+          ) : (
+            <button
+              onClick={generateArticle}
+              disabled={isGenerating}
+              style={{
+                width: "100%",
+                padding: "14px 20px",
+                borderRadius: 12,
+                border: "none",
+                background: isGenerating ? "rgba(99,102,241,0.3)" : "linear-gradient(135deg, #6366f1, #7c3aed)",
+                color: "#fff",
+                fontSize: 15,
+                fontWeight: 700,
+                cursor: isGenerating ? "not-allowed" : "pointer",
+                boxShadow: isGenerating ? "none" : "0 4px 20px rgba(99,102,241,0.3)",
+                letterSpacing: 0.3,
+              }}
+            >
+              {isGenerating ? "Generating..." : "Generate Article"}
+            </button>
+          )}
 
           {error && (
             <div
@@ -492,6 +615,39 @@ export default function ContentPilotApp() {
               }}
             >
               {error}
+            </div>
+          )}
+
+          {articles.length > 0 && (
+            <div style={{ marginTop: 24 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: "#64748b", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 10 }}>
+                History
+              </div>
+              <div style={{ maxHeight: 280, overflowY: "auto" }}>
+                {articles.map((article) => {
+                  const date = new Date(article.created_at);
+                  const now = new Date();
+                  const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+                  const dateLabel = diffDays === 0 ? "Today" : diffDays === 1 ? "Yesterday" : `${diffDays}d ago`;
+                  return (
+                    <button
+                      key={article.id}
+                      onClick={() => loadArticle(article.id)}
+                      style={{
+                        display: "block", width: "100%", textAlign: "left",
+                        padding: "8px 10px", borderRadius: 8, border: "none",
+                        background: "rgba(255,255,255,0.02)", cursor: "pointer",
+                        marginBottom: 4, color: "#94a3b8",
+                      }}
+                    >
+                      <div style={{ fontSize: 13, fontWeight: 500, color: "#e2e8f0", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                        {article.title || article.keyword}
+                      </div>
+                      <div style={{ fontSize: 11, color: "#475569", marginTop: 2 }}>{dateLabel}</div>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           )}
         </div>
