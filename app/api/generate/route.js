@@ -1,4 +1,4 @@
-﻿function buildPrompt({ keyword, language, tone, wordCount }) {
+function buildPrompt({ keyword, language, tone, wordCount }) {
   return `You are ContentPilot, an expert SEO content writer. Generate a comprehensive, well-structured article optimized for the keyword provided.
 
 RULES:
@@ -46,7 +46,7 @@ export async function POST(request) {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 55000);
 
-    console.log("[Generate] Sending request to Anthropic");
+    console.log("[Generate] Sending streaming request to Anthropic");
 
     let response;
     try {
@@ -60,6 +60,7 @@ export async function POST(request) {
         body: JSON.stringify({
           model: "claude-sonnet-4-20250514",
           max_tokens: 4096,
+          stream: true,
           system: buildPrompt({ keyword, language, tone, wordCount }),
           messages: [
             {
@@ -90,50 +91,69 @@ export async function POST(request) {
     }
 
     clearTimeout(timeoutId);
-    console.log("[Generate] Anthropic response received", { status: response.status });
-
-    const rawText = await response.text();
-
-    let data;
-    try {
-      data = JSON.parse(rawText);
-    } catch {
-      console.error("[Generate] Non-JSON response from Anthropic", rawText.slice(0, 300));
-      return Response.json(
-        {
-          error: "Anthropic returned a non-JSON response.",
-          details: rawText.slice(0, 300),
-        },
-        { status: 502 }
-      );
-    }
+    console.log("[Generate] Anthropic stream started", { status: response.status });
 
     if (!response.ok) {
-      console.error("[Generate] Anthropic API error", data);
+      const errText = await response.text();
+      let errData = {};
+      try { errData = JSON.parse(errText); } catch {}
+      console.error("[Generate] Anthropic API error", errData);
       return Response.json(
-        { error: data.error?.message || "Anthropic API request failed", details: data },
+        { error: errData.error?.message || "Anthropic API request failed" },
         { status: response.status }
       );
     }
 
-    const text = (data.content || [])
-      .filter((item) => item.type === "text")
-      .map((item) => item.text)
-      .join("\n\n");
+    const encoder = new TextEncoder();
+    const stream = new ReadableStream({
+      async start(controller) {
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = "";
+        let charCount = 0;
 
-    if (!text) {
-      console.error("[Generate] Anthropic response missing article text", data);
-      return Response.json(
-        { error: "Anthropic response did not include article text." },
-        { status: 502 }
-      );
-    }
+        try {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
 
-    console.log("[Generate] Article generated successfully", {
-      textLength: text.length,
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split("\n");
+            buffer = lines.pop();
+
+            for (const line of lines) {
+              if (!line.startsWith("data: ")) continue;
+              const data = line.slice(6).trim();
+              if (data === "[DONE]") continue;
+              try {
+                const parsed = JSON.parse(data);
+                if (
+                  parsed.type === "content_block_delta" &&
+                  parsed.delta?.type === "text_delta"
+                ) {
+                  const chunk = parsed.delta.text;
+                  charCount += chunk.length;
+                  controller.enqueue(encoder.encode(chunk));
+                }
+              } catch {}
+            }
+          }
+        } catch (err) {
+          console.error("[Generate] Stream read error", err);
+        } finally {
+          console.log("[Generate] Stream complete", { charCount });
+          controller.close();
+        }
+      },
     });
 
-    return Response.json({ text });
+    return new Response(stream, {
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "X-Content-Type-Options": "nosniff",
+        "Cache-Control": "no-cache",
+      },
+    });
   } catch (error) {
     console.error("[Generate] Route failed", error);
 

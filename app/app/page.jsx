@@ -177,20 +177,26 @@ export default function ContentPilotApp() {
 
       clearInterval(phaseInterval);
 
-      const contentType = response.headers.get("content-type") || "";
-      if (!contentType.includes("application/json")) {
-        throw new Error("Server returned an invalid response. Check the deployment logs.");
-      }
-
-      const data = await response.json();
-      const fullText = data.text || "";
-
       if (!response.ok) {
-        throw new Error(data.error || "Failed to generate article.");
+        const errText = await response.text();
+        let errMsg = "Failed to generate article.";
+        try { errMsg = JSON.parse(errText).error || errMsg; } catch {}
+        throw new Error(errMsg);
       }
 
-      if (!fullText) {
-        throw new Error(data.error || "Claude response did not include article text.");
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let fullText = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        fullText += decoder.decode(value, { stream: true });
+        setStreamText(fullText);
+      }
+
+      if (!fullText.trim()) {
+        throw new Error("No content received from server.");
       }
 
       const lines = fullText.split("\n");
@@ -203,19 +209,9 @@ export default function ContentPilotApp() {
       }
 
       setGeneratedTitle(title);
-
-      let i = 0;
-      const typeInterval = setInterval(() => {
-        i += 2;
-        if (i >= body.length) {
-          setStreamText(body);
-          setGeneratedContent(body);
-          setIsGenerating(false);
-          clearInterval(typeInterval);
-        } else {
-          setStreamText(body.slice(0, i));
-        }
-      }, 8);
+      setGeneratedContent(body);
+      setStreamText("");
+      setIsGenerating(false);
     } catch (err) {
       clearInterval(phaseInterval);
       setError(`Generation failed: ${err.message}`);
