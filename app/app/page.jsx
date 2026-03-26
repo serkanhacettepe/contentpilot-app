@@ -239,7 +239,14 @@ export default function ContentPilotApp() {
     setTimeout(() => setCopySuccess(""), 2500);
   };
 
-  const displayContent = generatedContent || streamText;
+  const streamBody = streamText
+    ? streamText.split("\n").slice(streamText.startsWith("# ") ? 1 : 0).join("\n").trim()
+    : "";
+  const streamTitle = streamText?.split("\n")[0]?.startsWith("# ")
+    ? streamText.split("\n")[0].replace(/^#\s+/, "")
+    : "";
+  const displayContent = generatedContent || streamBody;
+  const displayTitle = generatedTitle || streamTitle;
   const loadingMessages = [
     "Analyzing SERP data...",
     "Scanning top 10 competitors...",
@@ -527,7 +534,7 @@ export default function ContentPilotApp() {
 
           {activeTab === "editor" && displayContent && (
             <div>
-              {generatedTitle && (
+              {displayTitle && (
                 <h1
                   style={{
                     fontSize: "1.8rem",
@@ -540,7 +547,7 @@ export default function ContentPilotApp() {
                     WebkitTextFillColor: "transparent",
                   }}
                 >
-                  {generatedTitle}
+                  {displayTitle}
                 </h1>
               )}
 
