@@ -1,4 +1,5 @@
 // app/api/generate/route.js
+export const maxDuration = 60;
 import { createClient } from "@/lib/supabase-server";
 import { getPlanLimit } from "@/lib/plans";
 
@@ -99,7 +100,7 @@ export async function POST(request) {
           "anthropic-version": "2023-06-01",
         },
         body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
+          model: "claude-haiku-4-5-20251001",
           max_tokens: 4096,
           stream: true,
           system: buildPrompt({ keyword, language, tone, wordCount }),
