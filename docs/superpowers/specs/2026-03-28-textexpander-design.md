@@ -44,7 +44,7 @@ textexpander-extension/
 
 ```
 ┌─────────────────────────────────────────────┐
-│  ⚡ TextExpander              [↓] [↑] [🌙]  │  toolbar: brand + export + import + theme
+│  ⚡ TextExpander    [↓] [↑] [🌙]  [+ New]  │  toolbar: brand + export + import + theme + new
 ├─────────────────────────────────────────────┤
 │  🔍 Search shortcuts...                     │  search bar (full width)
 ├─────────────────────────────────────────────┤
@@ -58,7 +58,6 @@ textexpander-extension/
 │  │ [/thanks] 📧 Email            ✏️  📋 │  │
 │  │ Thank you for your email. I'll get... │  │
 │  └───────────────────────────────────────┘  │
-│                                  [+ New]    │
 └─────────────────────────────────────────────┘
 ```
 
